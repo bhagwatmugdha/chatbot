@@ -1,7 +1,73 @@
-Dialog Flow:
-Integration-
+Steps:
 
+1. Installations:
+    Use Easy Install to install the required.
+    Download requirements.txt and install.sh
+    Make the shell script executable and run the file.
 
-Prog file (for Heroku)
-web: gunicorn app:app
-app- name of python file
+    Create a Facebook Page, a Facebook Developer's account, Sign Up with Heroku and DialogFlow.
+
+2. DialogFlow:
+    Create an account with DialogFlow.
+    Create an Agent, followed by creating the Intent and Entitites.
+    Pass the query result for sentiment analysis processing.
+
+3. Python Flask:
+    Create the app.py file which take the query result and outputs the sentiment as fulfillment text.
+    
+4. NGROK:
+    Using ngrok obtain a public IP. Type- ngrok http {port number of the local host on which flask server is running}
+    Go to the Fulfillment Tab on left in DialogFlow, enter the URL as the publicIP/defined_route
+
+5. Integration:
+
+    Facebook Developer:
+        Go to the Developer.Facebook and create a new app with an unique name.
+        Add Messanger as a new product.
+        Go to Settings tab under Messanger.
+            Under Access Tokens-
+                Select the previously created Page and generate the Access Token for it.
+            Under Webhooks-
+                Subscribe to events-  messages, messaging_postbacks, message_deliveries
+                Select the above created Page to subscribe your Webhook to the Page Events
+    
+    DialogFlow:
+        In order to integrate with Facebook Messanger, go to the Integrations tab in DialogFlow and enable for Facebook Messanger.
+        Click on it and fill in the following-
+            Verify Token - set to any of your choice
+            Page Access TOken - paste the above generated access token
+            Click on Start
+    
+    Facebook:
+        Go to the created page and click on the Button and enable send message
+        And test by typing in the Messanger
+            
+6. Heroku Deployment:
+
+    Sign Up with Heroku and create an App with a unique name.
+
+    The folder should contain the following file before deployemnt:
+        1. Procfile
+            File which contains- 
+            web: gunicorn server:app
+            where server = name of the python file containing the Flask code
+        2. server.py
+            The python file with the Flask code for handling the sentiment analysis
+        3. requirements.txt
+            File specifying the requiremnts.
+    
+    Run the following on the terminal- 
+
+    $ heroku login
+
+    $ git init
+    $ heroku git:remote -a {name of your app}
+
+    $ git add .
+    $ git commit -am "make it better"
+    $ git push heroku master
+
+    You can check for errors with-
+    $heroku logs -t
+
+    Once the deployment is done, use the given URL and update the URL in Fulfillment in DialogFlow and add the route (from Python Flask file ) after the URL.
